@@ -60,7 +60,7 @@ const LoginPage = () => {
   
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const response = await fetch("http://localhost:3003/login", {
       method: "POST",
       headers: {
@@ -68,15 +68,18 @@ const LoginPage = () => {
       },
       body: JSON.stringify({ username, password }),
     });
-
+  
     if (response.ok) {
-      // Redirect to another page if login is successful
+      // Store username in localStorage
+      localStorage.setItem("username", username);
+  
+      // Redirect to attendance page
       navigate("/attendance"); // Change this to your desired route
     } else {
       const errorData = await response.json();
       alert("Login failed: " + errorData.message);
     }
-  };
+  };  
 
   return (
     <StyledLogin>

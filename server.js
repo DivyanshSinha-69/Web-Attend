@@ -282,6 +282,70 @@ passport.deserializeUser((username, done) => {
     });
 });
 
+// const ip = require('ip');
+
+// // Middleware to check if the IP is within the allowed subnet
+// const ProtectedRoute2 = (req, res, next) => {
+//     const allowedSubnet = '192.168.0.106'; // Replace with your desired subnet (CIDR notation)
+//     const userIp = req.ip;
+
+//     // Check if the user's IP is within the allowed subnet
+//     if (ip.cidrSubnet(allowedSubnet).contains(userIp)) {
+//         return next(); // Allow access if within the allowed subnet
+//     } else {
+//         return res.status(403).json({ success: false, message: 'Access denied: Unauthorized IP address' });
+//     }
+// };
+// app.get("/check-ip", (req, res) => {
+//     const clientIp = req.ip || req.connection.remoteAddress;
+//     if (isIpAllowed(clientIp)) {
+//       res.status(200).send("IP allowed");
+//     } else {
+//       res.status(403).send("Forbidden");
+//     }
+//   });
+  
+// // Apply this middleware to the routes you want to protect
+// app.use('/', ProtectedRoute2);  
+const ip = require('ip');
+
+// Middleware to check if the request is from a local IP (Wi-Fi network)
+const isIpAllowed = (req, res) => {
+    let userIp = req.ip;
+    console.log("Raw IP:", userIp);  // Debugging line
+
+    // If behind a proxy, use the X-Forwarded-For header (which can be an array)
+    if (req.headers['x-forwarded-for']) {
+        userIp = req.headers['x-forwarded-for'].split(',')[0]; // Get the first IP in the list
+        console.log("Forwarded IP:", userIp);  // Debugging line
+    }
+
+    // If it's IPv6 to IPv4, strip the ::ffff: part
+    if (userIp.startsWith('::ffff:')) {
+        userIp = userIp.slice(7);
+        console.log("Stripped IPv6 IP:", userIp);  // Debugging line
+    }
+
+    // Define allowed subnet (assuming your local network uses 192.168.0.0/24)
+    const allowedSubnet = '192.168.0.0/24';
+
+    // Check if the user's IP is in the allowed subnet or is localhost
+    const isLocalhost = userIp === '127.0.0.1' || userIp === 'localhost';
+    const isInAllowedSubnet = ip.cidrSubnet(allowedSubnet).contains(userIp);
+    
+    console.log("Is Localhost:", isLocalhost); // Debugging line
+    console.log("Is IP in Allowed Subnet:", isInAllowedSubnet); // Debugging line
+
+    if (isLocalhost || isInAllowedSubnet) {
+        return res.status(200).json({ success: true }); // IP is allowed
+    } else {
+        return res.status(403).json({ success: false }); // IP is not allowed
+    }
+};
+
+// Define the route that will be hit by the React component
+app.get('/check-ip', isIpAllowed);
+
 
 // Define Paths and Key Variables
 const keyPath = path.join(__dirname, 'key.txt');
@@ -341,7 +405,15 @@ const checkLicense = async (licenseKey) => {
         throw new Error(`License decryption/validation error: ${decryptErr.message}`);
     }
 };
-
+app.get("/check-ip", (req, res) => {
+    const clientIp = req.ip || req.connection.remoteAddress;
+    if (isIpAllowed(clientIp)) {
+      res.status(200).send("IP allowed");
+    } else {
+      res.status(403).send("Forbidden");
+    }
+  });
+  
 // Check License on Startup
 const validateKeyOnStartup = async () => {
     if (fs.existsSync(keyPath)) {

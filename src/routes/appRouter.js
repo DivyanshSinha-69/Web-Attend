@@ -8,11 +8,16 @@ import WorkingRemotely from "../components/WorkingRemotely";
 import LoginPage from "../components/Login";
 import SignupPage from "../components/Signup";
 import Error from "./Error";
-
+import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute2 from "./ProtectedRoute2";
 const appRouter = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+
+        <App />
+
+    ),
     children: [
       {
         path: "/",
@@ -28,11 +33,21 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/employee",
-        element: <Employee />,
+
+        element: (
+          <ProtectedRoute2>
+        <Employee />
+        </ProtectedRoute2>
+      ),
       },
       {
         path: "/attendance",
-        element: <Attendance />,
+        element: (
+          
+          <ProtectedRoute>
+            <Attendance />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/workingRemotely",
@@ -42,5 +57,4 @@ const appRouter = createBrowserRouter([
     errorElement: <Error />,
   },
 ]);
-
 export default appRouter;

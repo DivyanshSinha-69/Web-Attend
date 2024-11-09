@@ -1,13 +1,36 @@
 import React from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom"; // Import useNavigate for redirect
 import { StyledHeader } from "./style";
-import { NavLink, useLocation } from "react-router-dom";
 import face_recognition from "../../assets/face_recognition.png";
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // Hook to navigate programmatically
+
+  // Retrieve the username from localStorage
+  const username = localStorage.getItem("username");
+
+  // Function to handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("username"); // Remove the username from localStorage
+    navigate("/"); // Redirect to the home page after logging out
+  };
 
   const renderConditionalLinks = () => {
-    if (location.pathname === "/") {
+    if (username) {
+      // If the user is logged in, show "Welcome {username}" and the logout button
+      return (
+        <>
+          <li className="li-item">Hi, {username}</li>
+          <li>
+            <button onClick={handleLogout} className="li-item logout-btn">
+              Logout
+            </button>
+          </li>
+        </>
+      );
+    } else {
+      // If the user is not logged in, show the Login and Signup options
       return (
         <>
           <li>
@@ -26,41 +49,9 @@ const Header = () => {
           </li>
         </>
       );
-    } else if (location.pathname === "/Employee") {
-      return (
-        <li>
-          <NavLink to="/employee" activeClassName="active" className="li-item">
-            EMPLOYEE
-          </NavLink>
-        </li>
-      );
-    } else if (location.pathname === "/attendance") {
-      return (
-        <li>
-          <NavLink
-            to="/attendance"
-            activeClassName="active"
-            className="li-item"
-          >
-            ATTENDANCE
-          </NavLink>
-        </li>
-      );
-    } else if (location.pathname === "/workingRemotely") {
-      return (
-        <li>
-          <NavLink
-            to="/workingRemotely"
-            activeClassName="active"
-            className="li-item"
-          >
-            WorkingRemotely
-          </NavLink>
-        </li>
-      );
     }
-    return null;
   };
+
   return (
     <StyledHeader>
       <div className="logo-container">
@@ -78,7 +69,7 @@ const Header = () => {
               About
             </NavLink>
           </li>
-          {renderConditionalLinks()}
+          {renderConditionalLinks()} {/* Display Welcome or Login/Signup */}
         </ul>
       </div>
     </StyledHeader>

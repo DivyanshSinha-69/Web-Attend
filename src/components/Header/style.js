@@ -46,7 +46,19 @@ export const StyledHeader = styled.div`
     color: #007bff; /* Optional: change color on hover */
   }
 
-  .active {
-    font-weight: bold;
+
+  .logout-btn {
+    text-decoration: none;
+    background-color: #eafdfc;
+    color: black;
+    border: none;
+    font-size: 24px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .logout-btn:hover {
+    background-color: #eafdfc;
+    color: #007bff;
   }
 `;
