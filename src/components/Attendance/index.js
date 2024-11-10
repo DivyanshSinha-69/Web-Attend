@@ -19,7 +19,7 @@ const Attendance = () => {
   };
 
   const handleViewAttendance = () => {
-    navigate("/Attendance");
+    navigate("/ViewAttendance");
   };
   return (
     <StyledAttendance>
@@ -32,7 +32,7 @@ const Attendance = () => {
         </div>
       )}
     </StyledAttendance>
-  );
+  );  
 };
 
 export default Attendance;

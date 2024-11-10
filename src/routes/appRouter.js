@@ -7,9 +7,11 @@ import Attendance from "../components/Attendance";
 import WorkingRemotely from "../components/WorkingRemotely";
 import LoginPage from "../components/Login";
 import SignupPage from "../components/Signup";
+import ViewAttendance from "../components/ViewAttendance";
 import Error from "./Error";
 import ProtectedRoute from "./ProtectedRoute";
 import ProtectedRoute2 from "./ProtectedRoute2";
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -48,6 +50,10 @@ const appRouter = createBrowserRouter([
             <Attendance />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "/ViewAttendance",
+        element: <ViewAttendance />,
       },
       {
         path: "/workingRemotely",
