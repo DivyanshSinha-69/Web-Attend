@@ -11,6 +11,7 @@ import ViewAttendance from "../components/ViewAttendance";
 import Error from "./Error";
 import ProtectedRoute from "./ProtectedRoute";
 import ProtectedRoute2 from "./ProtectedRoute2";
+import MarkAttendance from "../components/MarkAttendance";
 
 const appRouter = createBrowserRouter([
   {
@@ -44,16 +45,18 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/attendance",
-        element: (
-          
-          <ProtectedRoute>
-            <Attendance />
-          </ProtectedRoute>
+        element: (         <Attendance />
+
+
         ),
       },
       {
         path: "/ViewAttendance",
         element: <ViewAttendance />,
+      },
+      {
+        path: "/markattendance",
+        element:<MarkAttendance/>,
       },
       {
         path: "/workingRemotely",

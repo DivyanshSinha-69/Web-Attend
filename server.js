@@ -281,32 +281,7 @@ passport.deserializeUser((username, done) => {
         done(err, user);
     });
 });
-
-// const ip = require('ip');
-
-// // Middleware to check if the IP is within the allowed subnet
-// const ProtectedRoute2 = (req, res, next) => {
-//     const allowedSubnet = '192.168.0.106'; // Replace with your desired subnet (CIDR notation)
-//     const userIp = req.ip;
-
-//     // Check if the user's IP is within the allowed subnet
-//     if (ip.cidrSubnet(allowedSubnet).contains(userIp)) {
-//         return next(); // Allow access if within the allowed subnet
-//     } else {
-//         return res.status(403).json({ success: false, message: 'Access denied: Unauthorized IP address' });
-//     }
-// };
-// app.get("/check-ip", (req, res) => {
-//     const clientIp = req.ip || req.connection.remoteAddress;
-//     if (isIpAllowed(clientIp)) {
-//       res.status(200).send("IP allowed");
-//     } else {
-//       res.status(403).send("Forbidden");
-//     }
-//   });
-  
-// // Apply this middleware to the routes you want to protect
-// app.use('/', ProtectedRoute2);  
+ 
 const ip = require('ip');
 
 // Middleware to check if the request is from a local IP (Wi-Fi network)
@@ -466,45 +441,29 @@ app.post("/license/validatekey", async (req, res) => {
 
 
 // Routes
-app.post("/signup", async (req, res) => {
+app.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
-    if (!username || !password) {
-        return res.status(400).json({ success: false, message: "Username and password are required" });
-    }
-
-    redisClient.hgetall(username, async (err, existingUser) => {
-        if (existingUser) {
-            return res.status(400).json({ success: false, message: "User already exists" });
-        }
-
-        try {
-            const hashedPassword = await bcrypt.hash(password, 10);
-            const newUser = { username, password: hashedPassword };
-            redisClient.hmset(username, newUser); // Save user in Redis
-            res.json({ success: true });
-        } catch (error) {
-            res.status(500).json({ success: false, message: "Signup failed" });
-        }
-    });
-});
-
-app.post("/login", (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            return res.status(401).json({ success: false, message: "Invalid credentials" });
-        }
-        req.logIn(user, (loginErr) => {
-            if (loginErr) {
-                return next(loginErr);
+    try {
+        // Fetch the user's data from Redis
+        client.hgetall(username, async (err, user) => {
+            if (err || !user) {
+                return res.status(401).json({ message: "User not found" });
             }
-            res.json({ success: true });
+
+            // Verify the password
+            const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+            if (isPasswordValid) {
+                res.json({ message: "Login successful" });
+            } else {
+                res.status(401).json({ message: "Invalid credentials" });
+            }
         });
-    })(req, res, next);
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
 });
+
 
 
 app.post("/save-image", async (req, res) => {
