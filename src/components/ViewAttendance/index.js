@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import "./ViewAttendance.css"; // Import a CSS file for styling
 
 const ViewAttendance = () => {
@@ -19,7 +19,7 @@ const ViewAttendance = () => {
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
     const storedPassword = localStorage.getItem("password");
-  
+
     if (!storedUsername || !storedPassword) {
       setError("Please login first");
       navigate("/login"); // Redirect to login page if not logged in
@@ -28,7 +28,7 @@ const ViewAttendance = () => {
       handleViewAttendance(storedUsername, storedPassword);
     }
   }, [navigate]);
-  
+
   const handleViewAttendance = async (username, password) => {
     try {
       const data = { username, password };
@@ -85,9 +85,15 @@ const ViewAttendance = () => {
           <p>No attendance records found.</p>
         )}
       </div>
+
+      {/* Mark Attendance Button */}
+      <div className="mark-attendance">
+        <Link to="/markAttendance">
+          <button>Mark Attendance</button>
+        </Link>
+      </div>
     </div>
   );
 };
 
 export default ViewAttendance;
-  

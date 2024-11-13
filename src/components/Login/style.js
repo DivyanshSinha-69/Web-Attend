@@ -1,79 +1,91 @@
 import styled from "styled-components";
 
 export const StyledLogin = styled.div`
-body {
-    font-family: Arial, sans-serif;
-    background: #b6eeff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:60vw;
   
   .container {
-    background: rgba(255, 255, 255, 0.500);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
     max-width: 400px;
-    width: 100%;
-    padding: 20px;
+    padding: 30px;
+    text-align: center;
     box-sizing: border-box;
   }
-  
+
   h2 {
-    text-align: center;
+    font-size: 1.8rem;
     color: #333;
+    margin-bottom: 20px;
   }
-  
+
   form {
     display: flex;
     flex-direction: column;
   }
-  
+
   .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: left;
   }
-  
+
   label {
     display: block;
+    font-weight: 600;
+    color: #666;
     margin-bottom: 5px;
-    font-weight: bold;
   }
-  
+
   input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
+    font-size: 1rem;
     border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
+    border-radius: 5px;
+    transition: border-color 0.3s;
   }
-  
+
+  input:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+
   button {
     background-color: #007bff;
-    color: #ffffff;
+    color: #fff;
+    font-size: 1rem;
+    padding: 12px;
     border: none;
-    padding: 10px;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    transition: background-color 0.3s;
   }
-  
+
   button:hover {
     background-color: #0056b3;
   }
-  
-  .signup-link {
-    text-align: center;
-    margin-top: 15px;
+
+  .error {
+    color: #e74c3c;
+    margin-top: 10px;
   }
-  
+
+  .signup-link {
+    margin-top: 15px;
+    color: #007bff;
+    font-size: 0.9rem;
+  }
+
   .signup-link a {
     color: #007bff;
     text-decoration: none;
   }
-  
+
   .signup-link a:hover {
     text-decoration: underline;
   }
-  `
+`;

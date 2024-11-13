@@ -12,6 +12,8 @@ import Error from "./Error";
 import ProtectedRoute from "./ProtectedRoute";
 import ProtectedRoute2 from "./ProtectedRoute2";
 import MarkAttendance from "../components/MarkAttendance";
+import BadRequest from "../components/about";
+import RolePage from "../components/rolepage";
 
 const appRouter = createBrowserRouter([
   {
@@ -25,6 +27,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path:"/role",
+        element:<RolePage/>,
       },
       {
         path: "/login",
@@ -58,6 +64,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/markattendance",
         element:<MarkAttendance/>,
+      },
+      {
+        path:"/about",
+        element:<BadRequest/>,
       },
       {
         path: "/workingRemotely",

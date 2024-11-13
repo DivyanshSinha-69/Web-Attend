@@ -7,6 +7,7 @@ export const StyledHeader = styled.div`
   border-bottom: 1px solid #bfeaf5;
   padding: 0 20px; /* Add padding to avoid content touching edges */
   box-sizing: border-box; /* Ensure padding is included in width */
+  background-color: black;
 
   .logo {
     width: 60px;
@@ -17,9 +18,11 @@ export const StyledHeader = styled.div`
   .nav-items {
     display: flex;
     align-items: center; /* Center nav items vertically */
+    justify-content: flex-start; /* Align items to the left */
     padding: 0;
     margin: 0;
     box-sizing: border-box; /* Ensure padding is included in width */
+    width: auto; /* Remove 100% width to prevent full-width span */
   }
 
   .nav-items-list {
@@ -30,7 +33,7 @@ export const StyledHeader = styled.div`
   }
 
   .nav-items-list > li {
-    padding: 10px;
+    padding: 15px;
     margin: 0; /* Remove margin to avoid unwanted space */
     font-size: 24px;
     font-weight: 600;
@@ -38,7 +41,7 @@ export const StyledHeader = styled.div`
 
   .li-item {
     text-decoration: none;
-    color: black;
+    color: white;
     transition: color 0.3s; /* Smooth color transition on hover */
   }
 
@@ -46,11 +49,10 @@ export const StyledHeader = styled.div`
     color: #007bff; /* Optional: change color on hover */
   }
 
-
   .logout-btn {
     text-decoration: none;
-    background-color: #eafdfc;
-    color: black;
+    background-color: black;
+    color: white;
     border: none;
     font-size: 24px;
     font-weight: 600;
@@ -58,7 +60,7 @@ export const StyledHeader = styled.div`
   }
 
   .logout-btn:hover {
-    background-color: #eafdfc;
+    background-color: black;
     color: #007bff;
   }
 `;

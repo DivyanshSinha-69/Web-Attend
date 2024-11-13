@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 import { StyledSignup } from "./style";
 import { registerFace } from "../../api/faceRecogonitionAPI";
-import Header from "../Header";
 
 const SignupPage = () => {
   const [name, setName] = useState("");
@@ -44,12 +43,24 @@ const SignupPage = () => {
     const imageFile = await captureImage();
 
     if (imageFile) {
-      const result = await registerFace(imageFile, name, rollNo, role, username, password);
+      const result = await registerFace(
+        imageFile,
+        name,
+        rollNo,
+        role,
+        username,
+        password
+      );
       if (result.error) {
         setError(result.error);
       } else {
         alert(result.message || "Registration successful!");
-        navigate("/login"); // Redirect to login page after successful signup
+        // Redirect based on the selected role
+        if (role === "Student") {
+          navigate("/attendance");
+        } else if (role === "Employee") {
+          navigate("/employee");
+        }
       }
     } else {
       setError("Failed to capture image.");
@@ -60,7 +71,6 @@ const SignupPage = () => {
 
   return (
     <StyledSignup>
-      <Header />
       <div className="container">
         <h2>Signup</h2>
         <form onSubmit={handleRegister}>
@@ -86,13 +96,16 @@ const SignupPage = () => {
           </div>
           <div className="form-group">
             <label htmlFor="role">Role:</label>
-            <input
-              type="text"
+            <select
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
               required
-            />
+            >
+              <option value="">Select Role</option>
+              <option value="Student">Student</option>
+              <option value="Employee">Employee</option>
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="username">Username:</label>
@@ -118,11 +131,22 @@ const SignupPage = () => {
         </form>
 
         {isWebcamActive && (
-          <div>
-            <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
-            <button onClick={submitRegistration} disabled={loading}>
-              {loading ? "Registering..." : "Capture & Register"}
-            </button>
+          <div className="overlay">
+            <div className="modal">
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                videoConstraints={{
+                  facingMode: "user",
+                  width: 500,
+                  height: 400,
+                }}
+              />
+              <button onClick={submitRegistration} disabled={loading}>
+                {loading ? "Registering..." : "Capture & Register"}
+              </button>
+            </div>
           </div>
         )}
 

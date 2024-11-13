@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import Webcam from "react-webcam";
 import { markAttendance } from "../../api/faceRecogonitionAPI";
+import { Link } from "react-router-dom";
+import { StyledMarkAttendance } from "./Style"; // Assuming you're using styled-components
 
 const MarkAttendance = () => {
   const webcamRef = useRef(null);
@@ -44,7 +46,7 @@ const MarkAttendance = () => {
   };
 
   return (
-    <div>
+    <StyledMarkAttendance>
       <h2>Mark Attendance</h2>
 
       <button onClick={handleMarkAttendance} disabled={isWebcamActive}>
@@ -52,8 +54,13 @@ const MarkAttendance = () => {
       </button>
 
       {isWebcamActive && (
-        <div>
-          <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
+        <div className="webcam-container">
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            className="webcam"
+          />
           <button onClick={submitAttendance} disabled={loading}>
             {loading ? "Marking Attendance..." : "Capture & Mark Attendance"}
           </button>
@@ -63,7 +70,7 @@ const MarkAttendance = () => {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {result && (
-        <div>
+        <div className="result">
           <h3>Attendance Marked</h3>
           <p>{`Name: ${result.attendance.name}`}</p>
           <p>{`Roll No: ${result.attendance.rollNo}`}</p>
@@ -71,7 +78,7 @@ const MarkAttendance = () => {
           <p>{`Date: ${result.attendance.date}`}</p>
 
           {previousDatesTimes.length > 0 && (
-            <div>
+            <div className="previous-records">
               <h4>Previous Attendance Records</h4>
               <ul>
                 {previousDatesTimes.map((record, index) => (
@@ -82,9 +89,15 @@ const MarkAttendance = () => {
           )}
         </div>
       )}
-    </div>
+
+      {/* Button to View Attendance */}
+      <div className="view-attendance">
+        <Link to="/ViewAttendance">
+          <button>View Attendance</button>
+        </Link>
+      </div>
+    </StyledMarkAttendance>
   );
 };
 
 export default MarkAttendance;
-
