@@ -25,14 +25,15 @@ const WorkingRemotely = () => {
       }
 
       const result = await response.json();
-      setMessage(result.success ? "Key validated successfully" : `Error: ${result.message}`);
-
+      
       if (result.success) {
-        // Redirect to /attendance if the key is validated successfully
-        navigate("/attendance");
+        alert("Key validated successfully"); // Alert on success
+        navigate("/attendance"); // Redirect to /attendance
+      } else {
+        alert(`Error: ${result.message}`); // Alert on error
       }
     } catch (error) {
-      setMessage(`Error: ${error.message}`);
+      alert(`Error: ${error.message}`); // Alert on network or other errors
     }
   };
 
@@ -50,7 +51,6 @@ const WorkingRemotely = () => {
             className="form-input"
           />
         </label>
-        <div className="form-message">{message}</div> {/* Display response message */}
         <button type="submit" className="form-button">
           Verify
         </button>

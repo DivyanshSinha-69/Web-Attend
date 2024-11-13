@@ -1,26 +1,45 @@
 import React from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom"; // Import useNavigate for redirect
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { StyledHeader } from "./style";
 import face_recognition from "../../assets/face_recognition.png";
+import { logoutUser } from "../../api/faceRecogonitionAPI";
+
 
 const Header = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // Hook to navigate programmatically
+  const navigate = useNavigate();
 
   // Retrieve the username from localStorage
   const username = localStorage.getItem("username");
 
-  // Function to handle logout
-  const handleLogout = () => {
-    localStorage.removeItem("username"); // Remove the username from localStorage
-    navigate("/"); // Redirect to the home page after logging out
+  const handleAttendance = () => {
+    navigate("/attendance");
   };
 
+  // Function to handle logout
+  const handleLogout = async () => {
+    const result = await logoutUser(); // Call the logout API
+
+    if (!result.error) {
+      // Clear user-related data from localStorage
+      localStorage.removeItem("username");
+
+      // Redirect to the home page after logging out
+      navigate("/");
+    } else {
+      console.error("Logout error:", result.error);
+    }
+  };
+
+  // Function to render conditional links based on login status
   const renderConditionalLinks = () => {
     if (username) {
-      // If the user is logged in, show "Welcome {username}" and the logout button
       return (
         <>
+          <button className="li-item logout-btn" onClick={handleAttendance}>
+            Attendance
+          </button>
+
           <li className="li-item">Hi, {username}</li>
           <li>
             <button onClick={handleLogout} className="li-item logout-btn">
@@ -30,20 +49,15 @@ const Header = () => {
         </>
       );
     } else {
-      // If the user is not logged in, show the Login and Signup options
       return (
         <>
           <li>
-            <NavLink to="/login" activeClassName="active" className="li-item">
+            <NavLink to="/login" className="li-item">
               Login
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/signup"
-              activeClassName="active"
-              className="li-item"
-            >
+            <NavLink to="/signup" className="li-item">
               Signup
             </NavLink>
           </li>
@@ -55,17 +69,17 @@ const Header = () => {
   return (
     <StyledHeader>
       <div className="logo-container">
-        <img src={face_recognition} alt="" className="logo" />
+        <img src={face_recognition} alt="Logo" className="logo" />
       </div>
       <div className="nav-items">
         <ul className="nav-items-list">
           <li>
-            <NavLink to="/" activeClassName="active" className="li-item">
+            <NavLink to="/" className="li-item">
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink to="/about" activeClassName="active" className="li-item">
+            <NavLink to="/about" className="li-item">
               About
             </NavLink>
           </li>

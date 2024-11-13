@@ -44,15 +44,16 @@ const appRouter = createBrowserRouter([
       ),
       },
       {
-        path: "/attendance",
-        element: (         <Attendance />
+        path: "/Attendance",
+        element: (<Attendance />
 
 
         ),
       },
       {
         path: "/ViewAttendance",
-        element: <ViewAttendance />,
+
+        element: <ProtectedRoute><ViewAttendance /> </ProtectedRoute>,
       },
       {
         path: "/markattendance",

@@ -12,12 +12,16 @@ const Login = () => {
     e.preventDefault();
     try {
       const data = { username, password };
-
+  
       const response = await axios.post("http://localhost:5000/login", data);
-
+  
       if (response.status === 200) {
-        // Redirect to ViewAttendance page with username and password as state
-        navigate("/ViewAttendance", { state: { username, password } });
+        // Store the username and password in localStorage
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
+  
+        // Redirect to ViewAttendance page
+        navigate("/Attendance");
       } else {
         setError("Invalid credentials");
       }
@@ -25,7 +29,7 @@ const Login = () => {
       setError("Login failed");
     }
   };
-
+  
   return (
     <div>
       <h2>Login</h2>
@@ -39,6 +43,7 @@ const Login = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Enter Username"
+            required
           />
         </div>
 
@@ -50,6 +55,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter Password"
+            required
           />
         </div>
 
@@ -62,3 +68,4 @@ const Login = () => {
 };
 
 export default Login;
+

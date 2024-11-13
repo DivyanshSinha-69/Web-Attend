@@ -5,7 +5,14 @@ const API_URL = "http://localhost:5000/api";
 // api/faceRecognitionAPI.js
 
 // Register face
-export const registerFace = async (imageFile, name, rollNo, role, username, password) => {
+export const registerFace = async (
+  imageFile,
+  name,
+  rollNo,
+  role,
+  username,
+  password
+) => {
   const formData = new FormData();
   formData.append("image", imageFile);
   formData.append("name", name);
@@ -19,10 +26,21 @@ export const registerFace = async (imageFile, name, rollNo, role, username, pass
       method: "POST",
       body: formData,
     });
-    return await response.json();
+
+    const result = await response.json();
+
+    // Check if registration was successful
+    if (response.ok && !result.error) {
+      // Store the username in localStorage instead of sessionStorage
+      localStorage.setItem("username", username); // Updated to localStorage
+      return result;
+    } else {
+      console.error("Registration failed:", result.error);
+      return { error: result.error || "Registration failed" };
+    }
   } catch (error) {
     console.error("Error in registration:", error);
-    return { error: "Registration failed" };
+    return { error: "Registration failed due to server error" };
   }
 };
 
@@ -64,11 +82,32 @@ export const markAttendance = async (imageFile) => {
 export const getAttendanceReport = async (name) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/attendance-report?name=${name}`
+      "http://localhost:5000/api/attendance-report?name=${name}"
     );
     return await response.json();
   } catch (error) {
     console.error("Error fetching attendance report:", error);
     return { error: "Failed to retrieve attendance report" };
+  }
+};
+
+// api/faceRecogonitionAPI.js
+
+export const logoutUser = async () => {
+  try {
+    const response = await fetch("http://localhost:5000/api/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const result = await response.json();
+
+    // Return the result from the backend
+    return result;
+  } catch (error) {
+    console.error("Logout failed:", error);
+    return { error: "An error occurred during logout" };
   }
 };
