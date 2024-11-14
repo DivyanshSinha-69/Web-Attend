@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 import { StyledSignup } from "./style";
+import { logoutUser } from "../../api/faceRecogonitionAPI";
 import { registerFace } from "../../api/faceRecogonitionAPI";
 
 const SignupPage = () => {
@@ -40,9 +41,12 @@ const SignupPage = () => {
   // Submit registration with captured image
   const submitRegistration = async () => {
     setLoading(true);
+    
+    // Capture the image from the webcam
     const imageFile = await captureImage();
-
+  
     if (imageFile) {
+      // Attempt to register the user's face with the provided data
       const result = await registerFace(
         imageFile,
         name,
@@ -51,23 +55,31 @@ const SignupPage = () => {
         username,
         password
       );
+  
       if (result.error) {
         setError(result.error);
       } else {
         alert(result.message || "Registration successful!");
+  
+        // Store username and password in localStorage
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
+        
         // Redirect based on the selected role
         if (role === "Student") {
           navigate("/attendance");
         } else if (role === "Employee") {
-          navigate("/employee");
+          navigate("/role");
         }
       }
     } else {
       setError("Failed to capture image.");
     }
+  
     setLoading(false);
     setIsWebcamActive(false);
   };
+  
 
   return (
     <StyledSignup>

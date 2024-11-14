@@ -38,8 +38,7 @@ const WorkingRemotely = () => {
   };
 
   return (
-    <StyledWorkingRemotely>
-      <Header /> {/* If you want to use Header */}
+    <StyledWorkingRemotely>{/* If you want to use Header */}
       <form onSubmit={handleSubmit} className="form">
         <h1 className="title">Key Verification</h1>
         <label className="form-label">

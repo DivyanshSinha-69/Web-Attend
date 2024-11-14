@@ -1,9 +1,9 @@
 import React from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { StyledHeader } from "./style";
-import face_recognition from "../../assets/face_recognition.png";
-import { logoutUser } from "../../api/faceRecogonitionAPI";
 
+import { logoutUser } from "../../api/faceRecogonitionAPI";
+import face_recognition from "./fc.png"
 
 const Header = () => {
   const location = useLocation();
@@ -70,6 +70,7 @@ const Header = () => {
     <StyledHeader>
       <div className="logo-container">
         <img src={face_recognition} alt="Logo" className="logo" />
+        <h2 className="li-item">Web Attend</h2>
       </div>
       <div className="nav-items">
         <ul className="nav-items-list">

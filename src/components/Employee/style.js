@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledEmployee = styled.div`
+export const Styled = styled.div`
   display: flex;
   flex-direction: column;
 

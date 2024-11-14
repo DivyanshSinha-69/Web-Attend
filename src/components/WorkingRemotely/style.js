@@ -46,10 +46,9 @@ export const StyledWorkingRemotely = styled.div`
     height: 480px;
     width: 900px;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(30px);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 80px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.4);
     overflow: hidden;
     justify-content: space-between; /* Space out elements evenly */
   }

@@ -44,9 +44,8 @@ const appRouter = createBrowserRouter([
         path: "/employee",
 
         element: (
-          <ProtectedRoute2>
         <Employee />
-        </ProtectedRoute2>
+       
       ),
       },
       {

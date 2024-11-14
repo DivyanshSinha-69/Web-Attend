@@ -6,19 +6,19 @@ import { useNavigate } from "react-router";
 const RolePage = () => {
   const navigate = useNavigate();
 
-  const handleEmployee = () => {
-    navigate("/Employee");
+  const handleRemoteWork = () => {
+    navigate("/WorkingRemotely");
   };
 
-  const handleStudent = () => {
+  const handlephysical = () => {
     navigate("/Attendance");
   };
 
   return (
     <StyledHomePage>
       <div className="card-container">
-        <Card name="Employee" onClick={handleEmployee} />
-        <Card name="Student" onClick={handleStudent} />
+        <Card name="Working Remotely" onClick={handleRemoteWork} />
+        <Card name="Physical Attendance" onClick={handlephysical} />
       </div>
     </StyledHomePage>
   );

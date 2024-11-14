@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./ViewAttendance.css"; // Import a CSS file for styling
 
 const ViewAttendance = () => {
   const [attendanceRecords, setAttendanceRecords] = useState([]);
   const [error, setError] = useState("");
   const [totalEntries, setTotalEntries] = useState(0); // New state for total number of entries
-
-  const location = useLocation();
   const navigate = useNavigate();
 
-  // Check for username and password in location state or localStorage
-  const { username, password } = location.state || {};
-  const storedUsername = localStorage.getItem("username");
-
-  // If no username and password in state, try to get from localStorage
   useEffect(() => {
+    // Retrieve username and password from localStorage
     const storedUsername = localStorage.getItem("username");
     const storedPassword = localStorage.getItem("password");
 
+    // Check if both are available, else redirect to login
     if (!storedUsername || !storedPassword) {
       setError("Please login first");
-      navigate("/login"); // Redirect to login page if not logged in
+      navigate("/login");
     } else {
-      // Fetch attendance data if logged in
+      // Fetch attendance data if credentials are available
       handleViewAttendance(storedUsername, storedPassword);
     }
   }, [navigate]);
 
+  // Function to fetch attendance records
   const handleViewAttendance = async (username, password) => {
     try {
       const data = { username, password };
@@ -37,9 +33,7 @@ const ViewAttendance = () => {
       if (response.status === 200) {
         const attendance = response.data.attendance || [];
         setAttendanceRecords(attendance);
-
-        // Set total entries to the number of records
-        setTotalEntries(attendance.length);
+        setTotalEntries(attendance.length); // Set total entries to the number of records
       } else {
         setError("No attendance records found.");
       }

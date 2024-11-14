@@ -105,7 +105,7 @@ const HomePage = () => {
   
     if (username && password) {
       // If both are found, navigate to /attendance
-      navigate("/attendance");
+      navigate("");
     } else {
       // If either is missing, navigate to /login
       navigate("/login");

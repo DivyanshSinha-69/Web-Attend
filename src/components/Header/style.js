@@ -63,4 +63,23 @@ export const StyledHeader = styled.div`
     background-color: black;
     color: #007bff;
   }
+  .lir-item{
+
+color:white
+  }
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 50px; /* Adjust width as needed */
+  margin-right: 10px; /* Space between logo and text */
+}
+
+.li-item {
+  font-size: 1.5rem; /* Adjust font size as needed */
+   /* Adjust color as needed */
+}
+
 `;
