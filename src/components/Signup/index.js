@@ -97,7 +97,7 @@ const SignupPage = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="rollNo">Roll No:</label>
+            <label htmlFor="rollNo">Roll No/Employee Id:</label>
             <input
               type="text"
               id="rollNo"

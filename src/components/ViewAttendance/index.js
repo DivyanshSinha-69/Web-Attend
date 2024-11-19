@@ -81,9 +81,9 @@ const ViewAttendance = () => {
       </div>
 
       {/* Mark Attendance Button */}
-      <div className="mark-attendance">
+      <div className="mark-attendanc">
         <Link to="/markAttendance">
-          <button>Mark Attendance</button>
+          <button className="mark-attendance">Mark Attendance</button>
         </Link>
       </div>
     </div>

@@ -44,11 +44,12 @@ const appRouter = createBrowserRouter([
         path: "/employee",
 
         element: (
-        <Employee />
+          <ProtectedRoute2>        <Employee /></ProtectedRoute2>
+
        
       ),
       },
-      {
+      {     
         path: "/Attendance",
         element: (<Attendance />
 
