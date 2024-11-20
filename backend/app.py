@@ -225,11 +225,13 @@ def mark_attendance():
         if not image_file:
             return jsonify({"error": "No image provided"}), 400
 
+        # Convert image to RGB array
         image = np.array(Image.open(image_file).convert("RGB"))
         embedding = extract_embedding(image)
         if embedding is None:
             return jsonify({"error": "No face detected"}), 400
 
+        # Load user data
         dataframe = load_dataframe_from_redis()
         name, role = ml_search_algorithm(dataframe, "embedding", np.array(embedding))
 
@@ -239,26 +241,35 @@ def mark_attendance():
         today = datetime.now().strftime("%Y-%m-%d")
         current_time = datetime.now().strftime("%H:%M:%S")
 
-        # Find the user_id for the recognized name
-        user_id = dataframe[dataframe['Name'] == name]['user_id'].values[0]
-        
+        # Get user ID for the recognized user
+        user_row = dataframe[dataframe['Name'] == name]
+        user_id = user_row['user_id'].values[0]
+
+        # Check if attendance is already marked for today
         attendance_key = f"{user_id}-{today}"
+        if r.exists(attendance_key):
+            return jsonify({"error": "Attendance already marked for today"}), 400
+
+        # Mark attendance
         attendance_data = {
             "name": name,
             "role": role,
-            "rollNo": dataframe[dataframe["Name"] == name]["RollNo"].values[0],
+            "rollNo": user_row["RollNo"].values[0],
             "date": today,
             "time": current_time
         }
 
+        # Save attendance data to Redis
         r.set(attendance_key, json.dumps(attendance_data))
 
+        # Append to the attendance report
         attendance_report_key = "attendance_report"
         attendance_report = r.get(attendance_report_key)
         attendance_report = json.loads(attendance_report) if attendance_report else []
         attendance_report.append(attendance_data)
         r.set(attendance_report_key, json.dumps(attendance_report))
 
+        # Update user's attendance history
         previous_dates_key = f"{user_id}_attendance_dates_times"
         previous_dates_times = r.get(previous_dates_key)
         previous_dates_times = json.loads(previous_dates_times) if previous_dates_times else []
@@ -268,6 +279,7 @@ def mark_attendance():
         return jsonify({"message": "Attendance marked successfully", "attendance": attendance_data}), 200
 
     except Exception as e:
+        print("Error marking attendance:", e)
         return jsonify({"error": str(e)}), 500
 
 @app.route('/get-attendance-history', methods=['GET'])
